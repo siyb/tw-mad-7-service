@@ -67,11 +67,11 @@
 ## Service Types - 3 - Other Differences
 
 * Started services run indefinitely until stopped
-  * Started services can be stopped from within using the stopSelf() method, as shown in the MyStartedService example code
-  * You may also use the stopService(...) method, available via the Context interface (e.g. from an Activity)
+    * Started services can be stopped from within using the stopSelf() method, as shown in the MyStartedService example code
+    * You may also use the stopService(...) method, available via the Context interface (e.g. from an Activity)
 * Bound services run as long as there are components bound to them
-   * use unbindService(...)
-   * bind / unbind a service in onResume / onPause, remember: onPause is the last guaranteed method to be called in case of Activity destruction!
+    * use unbindService(...)
+    * bind / unbind a service in onResume / onPause, remember: onPause is the last guaranteed method to be called in case of Activity destruction!
 * Started / Bound services run until both criteria are met!
 
 # Excursion: Observer Pattern
@@ -97,8 +97,8 @@ public class MyService extends Service {
   private IBinder myBinder; 
   @Override 
   public IBinder onBind(Intent intent) { 
-    if (myBinder==null)
-      myBinder=new MyBinder(); 
+    if (myBinder == null)
+      myBinder = new MyBinder(); 
     return myBinder; 
   } 
   public class MyBinder extends Binder { 
@@ -115,7 +115,6 @@ public class MyService extends Service {
 public class MyServiceActivity extends Activity {
   private TextView display;
   private ServiceConnection connection;
-
   @Override protected void onResume() { 
     super.onResume(); 
     bindService(new Intent(this, MyService.class), 
@@ -137,11 +136,10 @@ public class MyServiceActivity extends Activity {
 ```java
 public class MyServiceConnection implements ServiceConnection { 
   private MyServiceActivity a; 
-  public MyServiceConnection(Activity a) { 
-    this.a = a; 
-  }
+  public MyServiceConnection(Activity a) { this.a = a; }
   @Override 
-  public void onServiceConnected(ComponentName name, IBinder service) { 
+  public void onServiceConnected(ComponentName name, 
+    IBinder service) { 
     if (service instanceof MyBinder) { 
       int id = ((MyBinder) service).getId(); 
       a.display.setText("Service id is: " + id);
@@ -160,9 +158,9 @@ public class MyStartedService extends Service {
   private static final Logger LOGGER = 
     LoggerFactory.getLogger(MyStartedService.class); 
   public static final 
-    String INTENT_EXTRA_ITERATIONS = "INTENT_EXTRA_ITERATIONS"; 
+    String INTENT_EXTRA_ITERATIONS = "ITERATIONS"; 
   @Override public IBinder onBind(Intent intent) { 
-    return null; 
+    return null;
   } 
   @Override 
   public int onStartCommand(Intent intent, int flags, int startId) { 
@@ -170,6 +168,13 @@ public class MyStartedService extends Service {
     iterate(c); 
     return START_NOT_STICKY; 
   } 
+  ...
+}
+```
+
+## Bound / Started Service - 5 - Example: Started Service cont.
+
+```java
   public void iterate(final int c) { 
     Thread t = new Thread() { 
       @Override public void run() { 
@@ -179,10 +184,9 @@ public class MyStartedService extends Service {
     }; 
     t.start(); 
   } 
-}
 ```
 
-## Bound / Started Service - 5 - Example: Starting From Activity
+## Bound / Started Service - 6 - Example: Starting From Activity
 
 ```java
 public class MyStartedServiceActivity extends Activity { 
@@ -191,7 +195,10 @@ public class MyStartedServiceActivity extends Activity {
     super.onCreate(savedInstanceState); 
     setContentView(R.layout.mystartedserviceactivity); 
     Intent i = new Intent(this, MyStartedService.class); 
-    i.putExtra(MyStartedService.INTENT_EXTRA_ITERATIONS, 5); 
+    i.putExtra(
+      MyStartedService.INTENT_EXTRA_ITERATIONS, 
+      5
+    ); 
     startService(i); 
   } 
 }
@@ -221,7 +228,8 @@ public class MyIntentService extends IntentService {
   } 
   @Override 
   protected void onHandleIntent(Intent intent) { 
-  if (intent.getBooleanExtra(INTENT_EXTRA_SHOULDUPDATE, false))
+  if (intent.getBooleanExtra(
+    INTENT_EXTRA_SHOULDUPDATE, false))
     // Run update here 
   }  
 } 
