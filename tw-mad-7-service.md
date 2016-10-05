@@ -62,7 +62,7 @@
 
 ## Service Types - 2 - Different Lifecycles
 
-![Components](./lifecycle.png)
+![Different Lifecycles](./lifecycle.png)
 
 ## Service Types - 3 - Other Differences
 
