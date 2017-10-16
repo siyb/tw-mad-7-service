@@ -1,6 +1,6 @@
 % MAD - Android 7: Services
 % Patrick Sturm
-% 22.02.2017
+% 16.10.2017
 
 ## Information
 
